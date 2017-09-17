@@ -3,8 +3,8 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="col-md-4"></div>
-    <div class="col-12 col-lg-4">
+    <div class="col-md-3"></div>
+    <div class="col-12 col-lg-6">
         <div class="card">
             <h4 class="card-header">Login</h4>
             <div class="card-body">

@@ -10,7 +10,7 @@
         <script src="{{ asset('js/app.js') }}"></script>
     </head>
     <body>
-        <div class="container-fluid mt-5">
+        <div class="container mt-5">
             <div class="row">
                 @yield('content')
                 <div class="col-12">
