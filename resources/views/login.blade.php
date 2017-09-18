@@ -25,6 +25,19 @@
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
+                    <div class="custom-controls-stacked">
+                        <label class="custom-control custom-radio">
+                            <input id="student" name="role" value="student" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Student</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                            <input id="parent" name="role" value="parent" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Parent</span>
+                        </label>
+                    </div>
+                    <br>
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </form>
             </div>

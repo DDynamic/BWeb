@@ -33,6 +33,12 @@ class BaseController extends Controller
         session(['username' => $request->input('username')]);
         session(['password' => $request->input('password')]);
 
+        if ($request->input('role') == 'student') {
+            session(['role' => 'PARENTSWEB-STUDENT']);
+        } else if ($request->input('role') == 'parent') {
+            session(['role' => 'PARENTSWEB-PARENT']);
+        }
+
         return redirect()->route('login');
     }
 

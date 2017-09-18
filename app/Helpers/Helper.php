@@ -19,7 +19,6 @@ class Helper
         ]);
 
         session(['jar' =>  new \GuzzleHttp\Cookie\CookieJar()]);
-
         $client->get('/pw/', ['cookies' => session('jar')]);
 
         $client->post('/pw/index.cfm', [
@@ -27,7 +26,7 @@ class Helper
                 'DistrictCode' => session('district'),
                 'username' => session('username'),
                 'password' => session('password'),
-                'UserType' => 'PARENTSWEB-STUDENT',
+                'UserType' => session('role'),
                 'login' => 'Login'
             ],
             'cookies' => session('jar')
