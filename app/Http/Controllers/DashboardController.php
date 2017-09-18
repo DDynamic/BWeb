@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-
 use Helper;
 
 class DashboardController extends Controller
@@ -20,32 +17,9 @@ class DashboardController extends Controller
      */
     public function getDashboard(Request $request)
     {
-        $base_uri = 'https://'.session('district').'.client.renweb.com';
-        $client = new Client([
-            'base_uri' => $base_uri,
-            'timeout' => 30,
-            'cookies' => true,
-            'allow_redirects' => true
-        ]);
+        $client = Helper::client();
 
-        $jar = new \GuzzleHttp\Cookie\CookieJar();
-
-        $client->get('/pw/', ['cookies' => $jar]);
-
-        $client->post('/pw/index.cfm', [
-            'form_params' => [
-                'DistrictCode' => session('district'),
-                'username' => session('username'),
-                'password' => session('password'),
-                'UserType' => 'PARENTSWEB-STUDENT',
-                'login' => 'Login'
-            ],
-            'cookies' => $jar
-        ]);
-
-        $client->get('/pw/', ['cookies' => $jar]);
-
-        $response = $client->get('/pw/student/', ['cookies' => $jar]);
+        $response = $client->get('/pw/student/', ['cookies' => session('jar')]);
         $table = explode('<th class="col_instructor"><a href="javascript:void(0);">Instructor</a><span class="sort_arrow"></span><span class="sort_arrow_up"></span></th>', $response->getBody());
         $rows = explode('<tr', explode('</tbody>', explode('<tbody>', $table[1])[1])[0]);
 
