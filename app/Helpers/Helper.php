@@ -8,6 +8,32 @@ use GuzzleHttp\Exception\GuzzleException;
 class Helper
 {
 
+    public static function auth($client, $district, $username, $password, $role)
+    {
+        session(['jar' =>  new \GuzzleHttp\Cookie\CookieJar()]);
+
+        $client->get('/pw/', ['cookies' => session('jar')]);
+
+        $client->post('/pw/index.cfm', [
+            'form_params' => [
+                'DistrictCode' => $district,
+                'username' => $username,
+                'password' => $password,
+                'UserType' => $role,
+                'login' => 'Login'
+            ],
+            'cookies' => session('jar')
+        ]);
+
+        $response = $client->get('/pw/', ['cookies' => session('jar')]);
+
+        if (strpos($response->getBody(), 'Logout') !== false) {
+            // logged in success
+            session(['auth' => true]);
+            return true;
+        }
+    }
+
     public static function client()
     {
         $base_uri = 'https://'.session('district').'.client.renweb.com';
@@ -17,22 +43,6 @@ class Helper
             'cookies' => true,
             'allow_redirects' => true
         ]);
-
-        session(['jar' =>  new \GuzzleHttp\Cookie\CookieJar()]);
-        $client->get('/pw/', ['cookies' => session('jar')]);
-
-        $client->post('/pw/index.cfm', [
-            'form_params' => [
-                'DistrictCode' => session('district'),
-                'username' => session('username'),
-                'password' => session('password'),
-                'UserType' => session('role'),
-                'login' => 'Login'
-            ],
-            'cookies' => session('jar')
-        ]);
-
-        $client->get('/pw/', ['cookies' => session('jar')]);
 
         return $client;
     }

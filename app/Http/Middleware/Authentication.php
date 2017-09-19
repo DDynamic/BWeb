@@ -15,7 +15,7 @@ class Authentication
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->session()->has('username')) {
+        if (!session('auth')) {
             return redirect()->route('login');
         }
 

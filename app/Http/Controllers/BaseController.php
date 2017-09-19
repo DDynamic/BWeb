@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
+use Helper;
+
 class BaseController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class BaseController extends Controller
      */
     public function getLogin(Request $request)
     {
-        if ($request->session()->has('username')) {
+        if (session('auth')) {
             return redirect()->route('dashboard');
         } else {
             return view('login');
@@ -29,17 +31,26 @@ class BaseController extends Controller
      */
     public function postLogin(Request $request)
     {
-        session(['district' => $request->input('district')]);
-        session(['username' => $request->input('username')]);
-        session(['password' => $request->input('password')]);
+        $district = $request->input('district');
+        $username = $request->input('username');
+        $password = $request->input('password');
 
         if ($request->input('role') == 'student') {
-            session(['role' => 'PARENTSWEB-STUDENT']);
+            $role = 'PARENTSWEB-STUDENT';
         } else if ($request->input('role') == 'parent') {
-            session(['role' => 'PARENTSWEB-PARENT']);
+            $role = 'PARENTSWEB-PARENT';
         }
 
-        return redirect()->route('login');
+        session(['district' =>  $district]);
+
+        $client = Helper::client();
+
+        if (!Helper::auth($client, $district, $username, $password, $role)) {
+            return redirect()->route('login');
+            die();
+        }
+
+        return redirect()->route('dashboard');
     }
 
     /**

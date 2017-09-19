@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts/master')
 
 @section('title', 'Login')
 
@@ -11,6 +11,15 @@
                 <div class="alert alert-warning">
                     <p><b>Privacy Notice:</b> Your password is never saved and the site administrator does not have access to your credientals. This website is for educational purposes only.</p>
                 </div>
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
@@ -27,7 +36,7 @@
                     </div>
                     <div class="custom-controls-stacked">
                         <label class="custom-control custom-radio">
-                            <input id="student" name="role" value="student" type="radio" class="custom-control-input">
+                            <input id="student" name="role" value="student" type="radio" class="custom-control-input" checked>
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">Student</span>
                         </label>

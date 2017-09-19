@@ -20,6 +20,8 @@ class DashboardController extends Controller
         $client = Helper::client();
 
         $response = $client->get('/pw/student/', ['cookies' => session('jar')]);
+        $user = explode('</h3>', explode('<h3>', $response->getBody())[1])[0];
+
         $table = explode('<th class="col_instructor"><a href="javascript:void(0);">Instructor</a><span class="sort_arrow"></span><span class="sort_arrow_up"></span></th>', $response->getBody());
         $rows = explode('<tr', explode('</tbody>', explode('<tbody>', $table[1])[1])[0]);
 
@@ -84,11 +86,11 @@ class DashboardController extends Controller
         }
 
         if (empty($brief)) {
-            $brief = '<b>Looking good!</b> Give yourself a high five.';
+            $brief = '<b>Looking good!</b> Give yourself a high five. ✋';
             $alert = 'success';
         }
 
-        return view('dashboard', ['classes' => $classes, 'brief' => $brief, 'alert' => $alert]);
+        return view('dashboard.overview', ['user' => $user, 'classes' => $classes, 'brief' => $brief, 'alert' => $alert]);
     }
 
 }
