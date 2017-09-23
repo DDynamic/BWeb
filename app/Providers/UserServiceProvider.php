@@ -33,7 +33,7 @@ class UserServiceProvider implements UserProvider
 
         $client->post('/pw/index.cfm', [
             'form_params' => [
-                'DistrictCode' => $credentials['district'],
+                'DistrictCode' => session('district'),
                 'username' => $credentials['username'],
                 'password' => $credentials['password'],
                 'UserType' => $credentials['role'],
@@ -45,7 +45,6 @@ class UserServiceProvider implements UserProvider
         $response = $client->get('/pw/', ['cookies' => session('jar')]);
 
         if (strpos($response->getBody(), 'Logout') !== false) {
-            session(['auth' => true]);
             return true;
         } else {
             return false;

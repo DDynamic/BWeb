@@ -4,18 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Controller;
-
 use Helper;
 
 class DashboardController extends Controller
 {
     /**
-     * Get the dashboard.
+     * Create a new controller instance.
      *
-     * @return view
+     * @return void
      */
-    public function getDashboard(Request $request)
+    public function __construct()
+    {
+        // TODO
+        // Write custom guard and renable middleware
+        // $this->middleware('auth');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
         $client = Helper::client();
 
@@ -90,7 +100,6 @@ class DashboardController extends Controller
             $alert = 'success';
         }
 
-        return view('dashboard.overview', ['user' => $user, 'classes' => $classes, 'brief' => $brief, 'alert' => $alert]);
+        return view('dashboard.index', ['user' => $user, 'classes' => $classes, 'brief' => $brief, 'alert' => $alert]);
     }
-
 }

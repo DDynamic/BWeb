@@ -11,10 +11,8 @@
 |
 */
 
-Route::get('/auth/login', ['as' => 'auth.login', 'uses' => 'BaseController@getLogin']);
-Route::post('/auth/login', ['as' => 'auth.login.post', 'uses' => 'BaseController@postLogin']);
+Route::get('/auth/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('/auth/login', ['uses' => 'Auth\LoginController@login']);
+Route::get('/auth/exit', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
-Route::middleware(['authentication'])->group(function () {
-    Route::get('/', ['as' => 'dashboard', 'uses' => 'DashboardController@getDashboard']);
-    Route::get('/auth/exit', ['as' => 'auth.exit', 'uses' => 'BaseController@getExit']);
-});
+Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);

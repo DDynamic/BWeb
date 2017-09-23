@@ -11,10 +11,10 @@
             <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Overview</a>
+                        <a class="nav-link" href="{{ route('home') }}">Overview</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('auth.exit') }}">Logout</a>
+                        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
                     </li>
                 </ul>
             </div>
