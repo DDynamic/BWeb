@@ -18,8 +18,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Auth::provider('renweb', function ($app, array $config) {
-            // Return an instance of Illuminate\Contracts\Auth\UserProvider...
-
             return new UserServiceProvider();
         });
     }

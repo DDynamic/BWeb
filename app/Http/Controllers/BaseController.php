@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
+use Auth;
 use Helper;
 
 class BaseController extends Controller
@@ -43,14 +44,17 @@ class BaseController extends Controller
 
         session(['district' =>  $district]);
 
-        $client = Helper::client();
-
-        if (!Helper::auth($client, $district, $username, $password, $role)) {
+        if (Auth::attempt([
+            'username' => $username,
+            'password' => $password,
+            'role' => $role,
+            'district' => $district
+        ])) {
+            return redirect()->route('dashboard');
+        } else {
             return redirect()->route('auth.login');
             die();
         }
-
-        return redirect()->route('dashboard');
     }
 
     /**
