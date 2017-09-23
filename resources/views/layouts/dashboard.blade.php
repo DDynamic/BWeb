@@ -14,7 +14,7 @@
                         <a class="nav-link" href="{{ route('dashboard') }}">Overview</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('exit') }}">Logout</a>
+                        <a class="nav-link" href="{{ route('auth.exit') }}">Logout</a>
                     </li>
                 </ul>
             </div>

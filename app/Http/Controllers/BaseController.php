@@ -46,7 +46,7 @@ class BaseController extends Controller
         $client = Helper::client();
 
         if (!Helper::auth($client, $district, $username, $password, $role)) {
-            return redirect()->route('login');
+            return redirect()->route('auth.login');
             die();
         }
 
@@ -61,6 +61,6 @@ class BaseController extends Controller
     public function getExit(Request $request)
     {
         $request->session()->flush();
-        return redirect()->route('login');
+        return redirect()->route('auth.login');
     }
 }

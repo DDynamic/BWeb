@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', ['as' => 'login', 'uses' => 'BaseController@getLogin']);
-Route::post('/', ['as' => 'login.post', 'uses' => 'BaseController@postLogin']);
+Route::get('/auth/login', ['as' => 'auth.login', 'uses' => 'BaseController@getLogin']);
+Route::post('/auth/login', ['as' => 'auth.login.post', 'uses' => 'BaseController@postLogin']);
 
 Route::middleware(['authentication'])->group(function () {
-    Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@getDashboard']);
-    Route::get('/exit', ['as' => 'exit', 'uses' => 'BaseController@getExit']);
+    Route::get('/', ['as' => 'dashboard', 'uses' => 'DashboardController@getDashboard']);
+    Route::get('/auth/exit', ['as' => 'auth.exit', 'uses' => 'BaseController@getExit']);
 });
