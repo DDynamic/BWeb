@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Validation\Rule;
 
 use Auth;
 
@@ -38,13 +40,15 @@ class LoginController extends Controller
      */
     protected function validateLogin(Request $request)
     {
-        //TODO Validate Form params
-        /*
         $this->validate($request, [
-            $this->username() => 'required|string',
+            'district' => 'required|string',
+            'username' => 'required|string',
             'password' => 'required|string',
+            'role' => [
+                'required',
+                Rule::in(['PARENTSWEB-STUDENT', 'PARENTSWEB-PARENT']),
+            ],
         ]);
-        */
     }
 
     /**
