@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+     protected $redirectTo = '/';
 
     /**
      * Validate the user login request.
@@ -71,6 +71,19 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         return $request->only('district', 'username', 'password', 'role');
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+        $request->session()->invalidate();
+        return redirect()->route('login');
     }
 
     /**

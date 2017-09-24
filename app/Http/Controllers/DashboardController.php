@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
 use Helper;
 
 class DashboardController extends Controller
@@ -15,9 +16,7 @@ class DashboardController extends Controller
      */
     public function __construct()
     {
-        // TODO
-        // Write custom guard and renable middleware
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**

@@ -37,7 +37,7 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'renweb',
             'provider' => 'users',
         ],
 
@@ -68,15 +68,6 @@ return [
         'users' => [
             'driver' => 'renweb',
         ],
-        // 'users' => [
-        //    'driver' => 'eloquent',
-        //    'model' => App\User::class,
-        // ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

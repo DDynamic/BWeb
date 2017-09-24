@@ -2,23 +2,24 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthenticationException;
 
-class RedirectIfAuthenticated
+use Closure;
+use Auth;
+
+class Authenticate
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next, Array $guards = [])
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect()->route('dashboard');
+        if (!Auth::check()) {
+            throw new AuthenticationException('Unauthenticated.', $guards);
         }
 
         return $next($request);
