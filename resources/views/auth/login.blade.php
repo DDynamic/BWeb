@@ -8,9 +8,6 @@
         <div class="card">
             <h4 class="card-header">Login</h4>
             <div class="card-body">
-                <div class="alert alert-warning">
-                    <p><b>Privacy Notice:</b> Your password is never saved and the site administrator does not have access to your credientals. This website is for educational purposes only.</p>
-                </div>
                 <form method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
@@ -39,6 +36,24 @@
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    <br>
+                    <p class="text-center">By clicking submit, you are agreeing to the <a href="#" data-toggle="modal" data-target="#terms">terms of use</a>.</p>
+                    <div class="modal fade" id="terms" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Terms of Use</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Your password is never saved and the site administrator does not have access to your credientals.
+                                    <br><br>This website is for educational purposes only. <b>Use at your own risk!</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
