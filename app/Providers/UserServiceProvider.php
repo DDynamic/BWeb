@@ -29,23 +29,18 @@ class UserServiceProvider implements UserProvider
         session(['jar' =>  new \GuzzleHttp\Cookie\CookieJar()]);
 
         $client = Helper::client();
-        $client->get('/pw/', ['cookies' => session('jar')]);
 
-        $client->post('/pw/index.cfm', [
-            'form_params' => [
-                'DistrictCode' => session('district'),
-                'username' => $credentials['username'],
-                'password' => $credentials['password'],
-                'UserType' => $credentials['role'],
-                'login' => 'Login'
-            ],
-            'cookies' => session('jar')
-        ]);
-
-        $response = $client->get('/pw/', ['cookies' => session('jar')]);
-
-        if (strpos($response->getBody(), 'Logout') !== false) {
-            return true;
+        if ($client) {
+            $client->post('/pw/index.cfm', [
+                'form_params' => [
+                    'DistrictCode' => session('district'),
+                    'username' => $credentials['username'],
+                    'password' => $credentials['password'],
+                    'UserType' => $credentials['role'],
+                    'login' => 'Login'
+                ],
+                'cookies' => session('jar')
+            ]);
         } else {
             return false;
         }

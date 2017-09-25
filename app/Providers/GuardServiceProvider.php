@@ -20,10 +20,15 @@ class GuardServiceProvider extends SessionGuard implements Guard
     public function check() {
         if (session('jar') !== null) {
             $client = Helper::client();
-            $response = $client->get('/pw/', ['cookies' => session('jar')]);
+            
+            if ($client) {
+                $response = $client->get('/pw/', ['cookies' => session('jar')]);
 
-            if (strpos($response->getBody(), 'Logout') !== false) {
-                return true;
+                if (strpos($response->getBody(), 'Logout') !== false) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }

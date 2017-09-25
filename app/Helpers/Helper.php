@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\ConnectException;
 
 class Helper
 {
@@ -18,9 +19,15 @@ class Helper
                 'allow_redirects' => true
             ]);
 
+            try {
+                $client->get('/');
+            } catch (ConnectException $e) {
+                return false;
+            }
+
             return $client;
         } else {
-            return null;
+            return false;
         }
     }
 
