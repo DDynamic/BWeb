@@ -20,7 +20,7 @@ class GuardServiceProvider extends SessionGuard implements Guard
     public function check() {
         if (session('jar') !== null) {
             $client = Helper::client();
-            
+
             if ($client) {
                 $response = $client->get('/pw/', ['cookies' => session('jar')]);
 
@@ -63,6 +63,7 @@ class GuardServiceProvider extends SessionGuard implements Guard
      * @return int|null
      */
     public function id() {
+        //
     }
 
     /**
@@ -72,6 +73,7 @@ class GuardServiceProvider extends SessionGuard implements Guard
      * @return bool
      */
     public function validate(array $credentials = []) {
+        //
     }
 
     /**
@@ -81,5 +83,6 @@ class GuardServiceProvider extends SessionGuard implements Guard
      * @return void
      */
     public function setUser(Authenticatable $user) {
+        //
     }
 }

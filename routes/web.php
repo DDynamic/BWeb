@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+Route::get('/', ['as' => 'dashboard', 'uses' => 'DashboardController@getIndex']);
+Route::get('/course/{id}', ['as' => 'dashboard.course', 'uses' => 'DashboardController@getCourse']);
 
 Route::get('/auth/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
 Route::post('/auth/login', ['uses' => 'Auth\LoginController@login']);

@@ -27,7 +27,9 @@
         <tbody>
             @foreach ($classes as $class)
                 <tr>
-                    <td>{{ $class['name'] }}</td>
+                    <td>
+                        <a href="{{ route('dashboard.course', ['id' => $class['course_id']]) }}">{{ $class['name'] }}</a>
+                    </td>
                     <td class="
                     @if ($class['grade'] != 'N/A')
                         @switch($class['grade'])

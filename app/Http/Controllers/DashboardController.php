@@ -24,7 +24,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function getIndex(Request $request)
     {
         $client = Helper::client();
 
@@ -39,8 +39,8 @@ class DashboardController extends Controller
 
         foreach ($rows as $row) {
             $extracted = explode('">', explode('col_subject"', $row)[1]);
-            $classid = explode('classid=', $extracted[0])[1];
-            $studentid = explode('&', explode('studentid=', $extracted[0])[1])[0];
+            $course_id = explode('classid=', $extracted[0])[1];
+            $student_id = explode('&', explode('studentid=', $extracted[0])[1])[0];
 
             $name = explode('</a>', $extracted[1])[0];
             $grade = explode('</a>', $extracted[3])[0];
@@ -52,8 +52,8 @@ class DashboardController extends Controller
             }
 
             array_push($classes, [
-                'classid' => $classid,
-                'studentid' => $studentid,
+                'course_id' => $course_id,
+                'student_id' => $student_id,
                 'name' => $name,
                 'grade' => $grade,
                 'email' => $email,
@@ -100,5 +100,40 @@ class DashboardController extends Controller
         }
 
         return view('dashboard.index', ['user' => $user, 'classes' => $classes, 'brief' => $brief, 'alert' => $alert]);
+    }
+
+    /**
+     * View a course.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getCourse(Request $request, $course_id)
+    {
+        $client = Helper::client();
+
+        $response = $client->get('/pw/school/class.cfm?studentid='.session('student_id').'&classid='.$course_id, ['cookies' => session('jar')])->getBody();
+        $report = explode('<form action="', $response)[1];
+
+        $district = explode('" />', explode('name="District" value="', $report)[1])[0];
+        $report_type = explode('" />', explode('name="ReportType" value="', $report)[1])[0];
+        $session_id = explode('" />', explode('name="sessionid" value="', $report)[1])[0];
+        $report_hash = explode('" />', explode('name="ReportHash" value="', $report)[1])[0];
+        $school_code = explode('" />', explode('name="SchoolCode" value="', $report)[1])[0];
+        $student_id = explode('" />', explode('name="StudentID" value="', $report)[1])[0];
+        $class_id = explode('" />', explode('name="ClassID2" value="', $report)[1])[0];
+        $term_id = explode('" />', explode('name="TermID" value="', $report)[1])[0];
+
+        $report_url = '/renweb/reports/parentsweb/parentsweb_reports.cfm?District='.$district.
+        '&ReportType='.$report_type.
+        '&sessionid='.$session_id.
+        '&ReportHash='.$report_hash.
+        '&SchoolCode='.$school_code.
+        '&StudentID='.$student_id.
+        '&ClassID='.$class_id.
+        '&TermID='.$term_id;
+
+        $response = $client->get($report_url, ['cookies' => session('jar')])->getBody();
+
+        return view('dashboard.course', ['gradebook' => $response]);
     }
 }

@@ -11,14 +11,15 @@ use Helper;
 class UserServiceProvider implements UserProvider
 {
     public function retrieveById($identifier) {
-
+        //
     }
 
     public function retrieveByToken($identifier, $token) {
-
+        //
     }
 
     public function updateRememberToken(Authenticatable $user, $token) {
+        //
     }
 
     public function retrieveByCredentials(array $credentials) {
@@ -41,6 +42,16 @@ class UserServiceProvider implements UserProvider
                 ],
                 'cookies' => session('jar')
             ]);
+
+            $response = $client->get('/pw/student', ['cookies' => session('jar')]);
+
+            if (strpos($response->getBody(), 'Logout') !== false) {
+                $student_id = explode('"', explode('#tab', $response->getBody())[1])[0];
+                session(['student_id' => $student_id]);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
