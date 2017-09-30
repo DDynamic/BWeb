@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\ConnectException;
+
 use App\Models\User;
 
 use Helper;
@@ -22,7 +25,11 @@ class GuardServiceProvider extends SessionGuard implements Guard
             $client = Helper::client();
 
             if ($client) {
-                $response = $client->get('/pw/', ['cookies' => session('jar')]);
+                try {
+                    $response = $client->get('/pw/', ['cookies' => session('jar')]);
+                } catch (ConnectException $e) {
+                    return false;
+                }
 
                 if (strpos($response->getBody(), 'Logout') !== false) {
                     return true;

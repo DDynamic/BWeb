@@ -18,13 +18,7 @@ class Helper
                 'cookies' => true,
                 'allow_redirects' => true
             ]);
-
-            try {
-                $client->get('/');
-            } catch (ConnectException $e) {
-                return false;
-            }
-
+            
             return $client;
         } else {
             return false;

@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\User;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\ConnectException;
+
 use Helper;
 
 class UserServiceProvider implements UserProvider
@@ -32,16 +35,20 @@ class UserServiceProvider implements UserProvider
         $client = Helper::client();
 
         if ($client) {
-            $client->post('/pw/index.cfm', [
-                'form_params' => [
-                    'DistrictCode' => session('district'),
-                    'username' => $credentials['username'],
-                    'password' => $credentials['password'],
-                    'UserType' => $credentials['role'],
-                    'login' => 'Login'
-                ],
-                'cookies' => session('jar')
-            ]);
+            try {
+                $client->post('/pw/index.cfm', [
+                    'form_params' => [
+                        'DistrictCode' => session('district'),
+                        'username' => $credentials['username'],
+                        'password' => $credentials['password'],
+                        'UserType' => $credentials['role'],
+                        'login' => 'Login'
+                    ],
+                    'cookies' => session('jar')
+                ]);
+            } catch (ConnectException $e) {
+                return false;
+            }
 
             $response = $client->get('/pw/student', ['cookies' => session('jar')]);
 
