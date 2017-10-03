@@ -71,9 +71,9 @@ class DashboardController extends Controller
             if ($class['grade'] != 'N/A') {
                 if ($class['grade'] <= 70) {
                     array_push($failing_classes, $class['name']);
-                } else if ($class['grade'] <= 80) {
+                } elseif ($class['grade'] <= 80) {
                     array_push($danger_classes, $class['name']);
-                } else if ($class['grade'] <= 90) {
+                } elseif ($class['grade'] <= 90) {
                     array_push($warning_classes, $class['name']);
                 }
             }

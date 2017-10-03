@@ -20,7 +20,8 @@ class GuardServiceProvider extends SessionGuard implements Guard
      *
      * @return bool
      */
-    public function check() {
+    public function check()
+    {
         if (session('jar') !== null) {
             $client = Helper::client();
 
@@ -47,7 +48,8 @@ class GuardServiceProvider extends SessionGuard implements Guard
      *
      * @return bool
      */
-    public function guest() {
+    public function guest()
+    {
         if ($this->check) {
             return false;
         } else {
@@ -60,7 +62,8 @@ class GuardServiceProvider extends SessionGuard implements Guard
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function user() {
+    public function user()
+    {
         return new User();
     }
 
@@ -69,7 +72,8 @@ class GuardServiceProvider extends SessionGuard implements Guard
      *
      * @return int|null
      */
-    public function id() {
+    public function id()
+    {
         //
     }
 
@@ -79,7 +83,8 @@ class GuardServiceProvider extends SessionGuard implements Guard
      * @param  array  $credentials
      * @return bool
      */
-    public function validate(array $credentials = []) {
+    public function validate(array $credentials = [])
+    {
         //
     }
 
@@ -89,7 +94,8 @@ class GuardServiceProvider extends SessionGuard implements Guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
      */
-    public function setUser(Authenticatable $user) {
+    public function setUser(Authenticatable $user)
+    {
         //
     }
 }

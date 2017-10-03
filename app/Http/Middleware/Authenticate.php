@@ -16,7 +16,7 @@ class Authenticate
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, Array $guards = [])
+    public function handle($request, Closure $next, array $guards = [])
     {
         if (!Auth::check()) {
             throw new AuthenticationException('Unauthenticated.', $guards);

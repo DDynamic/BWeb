@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-     protected $redirectTo = '/';
+    protected $redirectTo = '/';
 
     /**
      * Validate the user login request.

@@ -13,23 +13,28 @@ use Helper;
 
 class UserServiceProvider implements UserProvider
 {
-    public function retrieveById($identifier) {
+    public function retrieveById($identifier)
+    {
         //
     }
 
-    public function retrieveByToken($identifier, $token) {
+    public function retrieveByToken($identifier, $token)
+    {
         //
     }
 
-    public function updateRememberToken(Authenticatable $user, $token) {
+    public function updateRememberToken(Authenticatable $user, $token)
+    {
         //
     }
 
-    public function retrieveByCredentials(array $credentials) {
+    public function retrieveByCredentials(array $credentials)
+    {
         return new User();
     }
 
-    public function validateCredentials(Authenticatable $user, array $credentials) {
+    public function validateCredentials(Authenticatable $user, array $credentials)
+    {
         session(['jar' =>  new \GuzzleHttp\Cookie\CookieJar()]);
 
         $client = Helper::client();
