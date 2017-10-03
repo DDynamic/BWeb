@@ -38,7 +38,7 @@
                             <span class="custom-control-description">Student</span>
                         </label>
                         <label class="custom-control custom-radio">
-                            <input id="parent" name="role" value="'PARENTSWEB-PARENT" type="radio" class="custom-control-input">
+                            <input id="parent" name="role" value="PARENTSWEB-PARENT" type="radio" class="custom-control-input">
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">Parent</span>
                         </label>
