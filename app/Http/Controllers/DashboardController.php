@@ -32,7 +32,7 @@ class DashboardController extends Controller
         $user = explode('</h3>', explode('<h3>', $response->getBody())[1])[0];
 
         $table = explode('<th class="col_instructor"><a href="javascript:void(0);">Instructor</a><span class="sort_arrow"></span><span class="sort_arrow_up"></span></th>', $response->getBody());
-        $rows = explode('<tr', explode('</tbody>', explode('<tbody>', $table[1])[1])[0]);
+        $rows = explode('<tr', explode('</tbody>', explode('<tbody>', end($table))[1])[0]);
 
         $classes = [];
         array_shift($rows);
@@ -114,6 +114,12 @@ class DashboardController extends Controller
         $response = $client->get('/pw/school/class.cfm?studentid='.session('student_id').'&classid='.$course_id, ['cookies' => session('jar')])->getBody();
         $report = explode('<form action="', $response)[1];
 
+        $term = explode('<select class="ftermid" name="termid" onchange="window.termID', $response)[1];
+        $term = explode('selected="selected">', $term)[0];
+        $term = explode('value="', $term);
+        $term = end($term);
+        $term = explode('"', $term)[0];
+
         $district = explode('" />', explode('name="District" value="', $report)[1])[0];
         $report_type = explode('" />', explode('name="ReportType" value="', $report)[1])[0];
         $session_id = explode('" />', explode('name="sessionid" value="', $report)[1])[0];
@@ -121,7 +127,6 @@ class DashboardController extends Controller
         $school_code = explode('" />', explode('name="SchoolCode" value="', $report)[1])[0];
         $student_id = explode('" />', explode('name="StudentID" value="', $report)[1])[0];
         $class_id = explode('" />', explode('name="ClassID2" value="', $report)[1])[0];
-        $term_id = explode('" />', explode('name="TermID" value="', $report)[1])[0];
 
         $report_url = '/renweb/reports/parentsweb/parentsweb_reports.cfm?District='.$district.
         '&ReportType='.$report_type.
@@ -130,7 +135,7 @@ class DashboardController extends Controller
         '&SchoolCode='.$school_code.
         '&StudentID='.$student_id.
         '&ClassID='.$class_id.
-        '&TermID='.$term_id;
+        '&TermID='.$term;
 
         $response = $client->get($report_url, ['cookies' => session('jar')])->getBody();
 

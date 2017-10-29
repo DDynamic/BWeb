@@ -3,15 +3,7 @@
 @section('section', 'Overview')
 
 @section('display')
-<b>@php $greetings = ['Howdy', 'Hello', 'Hey']; echo $greetings[rand(0,2)]; @endphp {{ $user }}!</b>
-<p>Welcome to BWeb, a RenWeb portal alternative that is mobile friendly and easier on the eyes.<br>Please report all bugs and feedback.</p>
-<b>Planned Features:</b>
-<ul>
-    <li>Ability to view assignments.</li>
-    <li>AI suggestions on how you can improve your grades.</li>
-    <li>Timed email alerts.</li>
-    <li>And whatever you sugguest!</li>
-</ul>
+<h4 class="display-5">{{ $user }}</h4>
 <div class="alert alert-{{ $alert }}" role="alert">
     {!! $brief !!}
 </div>
