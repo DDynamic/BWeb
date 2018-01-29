@@ -1,0 +1,39 @@
+{block title}Login{/block}
+
+{block content}
+    <div class="container col-4 offset-4">
+        <div class="card">
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body">
+                {form loginForm}
+                    <div class="alert alert-danger" n:if="$form->hasErrors()">
+                        <span n:foreach="$form->errors as $error">{$error}</span>
+                    </div>
+                    <form n:name="loginForm">
+                        <div class="form-group">
+                            {label district}
+                            {input district class => form-control}
+                        </div>
+                        <div class="form-group">
+                            {label username}
+                            {input username class => form-control}
+                        </div>
+                        <div class="form-group">
+                            {label password}
+                            {input password class => form-control}
+                        </div>
+                        {label account}
+                        <div class="form-group">
+                            {foreach $form[account]->items as $key => $label}
+                                <label n:name="account:$key"><input n:name="account:$key" {if $iterator->first}checked{/if}> {$label}</label><br>
+                            {/foreach}
+                        </div>
+                        {input submit class => 'form-control btn-block btn-primary'}
+                    </form>
+                {/form}
+            </div>
+        </div>
+    </div>
+{/block}
