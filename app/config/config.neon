@@ -12,3 +12,4 @@ session:
 
 services:
 	router: App\RouterFactory::createRouter
+	authenticator: App\Models\Authenticator

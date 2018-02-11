@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use Nette;
 use Nette\Application\UI;
+use App\Models\Authenticator;
 
 class AuthenticationPresenter extends BasePresenter
 {
@@ -34,24 +35,15 @@ class AuthenticationPresenter extends BasePresenter
 
     public function loginForm(UI\Form $form, $values)
     {
-        // login to renweb
-        // if valid add to accounts array then $this->user->login
-        // else redirect back with invalid account details
-
-        /*
-        $accounts = ['username' => 'password'];
-        $authenticator = new Nette\Security\SimpleAuthenticator($accounts);
-
         $user = $this->getUser();
-        $user->setAuthenticator($authenticator);
+        $user->setAuthenticator(new Authenticator());
 
         try {
-            $this->user->login($values->account, $values->password);
-            $this->redirect('Dashboard:home');
+            $user->login($values->username, $values->password, $values->account, $values->district);
+            //$this->redirect('Dashboard:home');
         } catch (Nette\Security\AuthenticationException $e) {
-            $form->addError('Invalid account details.');
+            $form->addError('Invalid credentials.');
         }
-        */
     }
 
     public function actionLogout()
