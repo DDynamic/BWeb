@@ -1,0 +1,24 @@
+{layout ../@layout.latte}
+
+{block content}
+    <div class="container col-8 offset-2">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link disabled"><b>{$this->getParameter('user')->getIdentity()->username}</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" n:href="Dashboard:home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" n:href="Authentication:logout">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                {include display}
+            </div>
+        </div>
+    </div>
+{/block}

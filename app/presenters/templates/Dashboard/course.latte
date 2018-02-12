@@ -1,0 +1,9 @@
+{layout 'dashboard.latte'}
+
+{block title}View Course{/block}
+
+{block display}
+    {$gradebook|noescape}
+    <table class="table table-striped">
+    </table>
+{/block}
