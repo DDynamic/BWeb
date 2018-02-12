@@ -40,7 +40,7 @@ class AuthenticationPresenter extends BasePresenter
 
         try {
             $user->login($values->username, $values->password, $values->account, $values->district);
-            //$this->redirect('Dashboard:home');
+            $this->redirect('Dashboard:home');
         } catch (Nette\Security\AuthenticationException $e) {
             $form->addError('Invalid credentials.');
         }

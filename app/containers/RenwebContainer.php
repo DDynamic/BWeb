@@ -13,7 +13,6 @@ class RenwebContainer extends Container
         $client = new Client([
             'base_uri' => $base_uri,
             'timeout' => 30,
-            'cookies' => true,
             'allow_redirects' => true
         ]);
 
