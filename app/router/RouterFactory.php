@@ -18,6 +18,7 @@ class RouterFactory
 	{
 		$router = new RouteList;
 		$router[] = new Route('/', 'Dashboard:home');
+		$router[] = new Route('/course/<id>', 'Dashboard:course');
 		$router[] = new Route('/login', 'Authentication:login');
 		$router[] = new Route('/logout', 'Authentication:logout');
 		return $router;
