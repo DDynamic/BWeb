@@ -35,10 +35,6 @@ class Authenticator implements IAuthenticator
             'cookies' => $cookies
         ])->getBody();
 
-        if (strpos($response, 'Logout') !== false) {
-            return new Identity(0, 'user', ['username' => $username, 'district' => $district, 'cookies' => $cookies]);
-        } else {
-            throw new AuthenticationException('Invalid credientals.');
-        }
+        return new Identity(0, 'user', ['username' => $username, 'district' => $district, 'cookies' => $cookies]);
     }
 }
