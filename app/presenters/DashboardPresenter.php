@@ -73,32 +73,94 @@ class DashboardPresenter extends BasePresenter
         $client = $this->client;
 
         $response = $client->get('/pw/school/class.cfm?studentid='.$user->getIdentity()->student_id.'&classid='.$id, ['cookies' => $user->getIdentity()->cookies])->getBody();
-        $report = explode('<form action="', $response)[1];
 
-        $term = explode('<select class="ftermid" name="termid" onchange="window.termID', $response)[1];
-        $term = explode('selected="selected">', $term)[0];
-        $term = explode('value="', $term);
-        $term = end($term);
-        $term = explode('"', $term)[0];
+        if (isset(explode('<form action="', $response)[1])) {
+            $report = explode('<form action="', $response)[1];
 
-        $district = explode('" />', explode('name="District" value="', $report)[1])[0];
-        $report_type = explode('" />', explode('name="ReportType" value="', $report)[1])[0];
-        $session_id = explode('" />', explode('name="sessionid" value="', $report)[1])[0];
-        $report_hash = explode('" />', explode('name="ReportHash" value="', $report)[1])[0];
-        $school_code = explode('" />', explode('name="SchoolCode" value="', $report)[1])[0];
-        $student_id = explode('" />', explode('name="StudentID" value="', $report)[1])[0];
-        $class_id = explode('" />', explode('name="ClassID2" value="', $report)[1])[0];
+            $term = explode('<select class="ftermid" name="termid" onchange="window.termID', $response)[1];
+            $term = explode('selected="selected">', $term)[0];
+            $term = explode('value="', $term);
+            $term = end($term);
+            $term = explode('"', $term)[0];
 
-        $report_url = '/renweb/reports/parentsweb/parentsweb_reports.cfm?District='.$district.
-        '&ReportType='.$report_type.
-        '&sessionid='.$session_id.
-        '&ReportHash='.$report_hash.
-        '&SchoolCode='.$school_code.
-        '&StudentID='.$student_id.
-        '&ClassID='.$class_id.
-        '&TermID='.$term;
+            $district = explode('" />', explode('name="District" value="', $report)[1])[0];
+            $report_type = explode('" />', explode('name="ReportType" value="', $report)[1])[0];
+            $session_id = explode('" />', explode('name="sessionid" value="', $report)[1])[0];
+            $report_hash = explode('" />', explode('name="ReportHash" value="', $report)[1])[0];
+            $school_code = explode('" />', explode('name="SchoolCode" value="', $report)[1])[0];
+            $student_id = explode('" />', explode('name="StudentID" value="', $report)[1])[0];
+            $class_id = explode('" />', explode('name="ClassID2" value="', $report)[1])[0];
 
-        $response = $client->get($report_url, ['cookies' => $user->getIdentity()->cookies])->getBody();
-        $this->template->gradebook = $response;
+            $report_url = '/renweb/reports/parentsweb/parentsweb_reports.cfm?District='.$district.
+            '&ReportType='.$report_type.
+            '&sessionid='.$session_id.
+            '&ReportHash='.$report_hash.
+            '&SchoolCode='.$school_code.
+            '&StudentID='.$student_id.
+            '&ClassID='.$class_id.
+            '&TermID='.$term;
+
+            $response = $client->get($report_url, ['cookies' => $user->getIdentity()->cookies])->getBody();
+
+            $exploded = explode('<table', $response);
+            array_shift($exploded);
+
+            $classname = explode('</b>', explode('<div style="border-bottom-style: solid; border-bottom-width: 1; padding-bottom: 1">
+            <font face="Arial"><b>', $exploded[0])[1])[0];
+            array_shift($exploded);
+
+            $work = [];
+            $i = 0;
+
+            foreach ($exploded as $row) {
+                if (isset(explode('size="2">', $row)[1])) {
+                    $category = explode('</font>', explode('size="2">', $row)[1])[0];
+
+                    if ($row === end($exploded)) {
+                        $work['Grade'] = [
+                            'percent' => trim(explode(' ', explode('<font size="2" face="Arial" >
+		  ', $row)[1])[0]),
+                            'letter' => trim(explode('</font>', explode('face="Arial" >', $row)[2])[0])
+                        ];
+
+                        if (strpos($row, 'Points = ') !== false) {
+                            $work['Grade']['points'] = trim(explode('<', explode('Points = ', $row)[1])[0]);
+                        }
+                    } else {
+                        $work[$category] = [];
+                        $assignments = explode('<td align="left"><font size="1" face="Arial">', $exploded[$i + 1]);
+                        array_shift($assignments);
+
+                        foreach ($assignments as $assignment) {
+                            $values = explode('<td ', $assignment);
+
+                            array_push($work[$category], [
+                                'name' => trim(explode('<', $values[0])[0]),
+                                'pts' => trim(explode("</", explode('k">', $values[1])[1])[0]),
+                                'max' => trim(explode('<', explode('color="Black">', $values[2])[1])[0]),
+                                'avg' => trim(explode('<', explode('color="Black">', $values[3])[1])[0]),
+                                'status' => trim(explode('<', explode('color="Black">', $values[4])[1])[0]),
+                                'due' => trim(explode('<', explode('color="Black">', $values[5])[1])[0]),
+                                'curve' => trim(explode('<', explode('color="Black">', $values[6])[1])[0]),
+                                'bonus' => trim(explode('<', explode('color="Black">', $values[7])[1])[0])
+                            ]);
+                        }
+                    }
+                }
+                $i++;
+            }
+
+            echo '<pre>';
+            die(print_r($work));
+
+
+            $gradebook = true;
+            $this->template->classname = $classname;
+            $this->template->work = $work;
+        } else {
+            $gradebook = false;
+        }
+
+        $this->template->gradebook = $gradebook;
     }
 }
