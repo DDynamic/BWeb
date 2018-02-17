@@ -3,7 +3,9 @@
 {block title}View Course{/block}
 
 {block display}
-    {$gradebook|noescape}
-    <table class="table table-striped">
-    </table>
+    {if $gradebook}
+        <h4>{$classname}</h4>
+    {else}
+        There is no gradebook available for this course.
+    {/if}
 {/block}
