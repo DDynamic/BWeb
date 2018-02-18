@@ -4,7 +4,54 @@
 
 {block display}
     {if $gradebook}
-        <h4>{$classname}</h4>
+        <div class="table-responsive">
+            <table class="table table-striped" n:foreach="$work as $category => $assignments">
+                {if $category != 'Grade'}
+                    <thead>
+                        <tr class="table-info">
+                            <th colspan="8">{$category}</th>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>Points</td>
+                            <td>Total</td>
+                            <td>Percent</td>
+                            <td>Status</td>
+                            <td>Due</td>
+                            <td>Curve</td>
+                            <td>Bonus</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr n:foreach="$assignments as $assignment">
+                            <td>{$assignment['name']}</td>
+                            <td>{$assignment['pts']}</td>
+                            <td>{$assignment['max']}</td>
+                            <td>{$assignment['avg']}</td>
+                            <td>{$assignment['status']}</td>
+                            <td>{$assignment['due']}</td>
+                            <td>{$assignment['curve']}</td>
+                            <td>{$assignment['bonus']}</td>
+                        </tr>
+                    </tbody>
+                {else}
+                    <thead>
+                        <tr class="table-info">
+                            <th colspan="2">{$classname}</th>
+                        </tr>
+                        <tr class="table-primary">
+                            <td>{$assignments['letter']}</td>
+                            <td>{$assignments['percent']}%</td>
+                        </tr>
+                        {if isset($assignments['points'])}
+                            <tr>
+                                <td colspan="2">Points = {$assignments['points']}</td>
+                            </tr>
+                        {/if}
+                    </thead>
+                {/if}
+            </table>
+        </div>
     {else}
         There is no gradebook available for this course.
     {/if}

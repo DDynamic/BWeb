@@ -112,21 +112,31 @@ class DashboardPresenter extends BasePresenter
             $work = [];
             $i = 0;
 
+            $work['Grade'] = [
+                'percent' => trim(explode('<', explode('<tr><td><b><font size="2" face="Arial">Term Grade</font></b></td><td>
+          <b><font size="2" face="Arial" >', $response)[1])[0]),
+                'letter' => trim(explode('<', explode('</font></b></td><td>
+          <b>
+          <font size="2" face="Arial" >', $response)[1])[0])
+            ];
+
+            if (strpos($response, 'Points = ') !== false) {
+                $work['Grade']['points'] = trim(explode('<', explode('Points = ', $response)[1])[0]);
+            }
+
             foreach ($exploded as $row) {
                 if (isset(explode('size="2">', $row)[1])) {
-                    $category = explode('</font>', explode('size="2">', $row)[1])[0];
-
-                    if ($row === end($exploded)) {
-                        $work['Grade'] = [
-                            'percent' => trim(explode(' ', explode('<font size="2" face="Arial" >
-		  ', $row)[1])[0]),
-                            'letter' => trim(explode('</font>', explode('face="Arial" >', $row)[2])[0])
-                        ];
-
-                        if (strpos($row, 'Points = ') !== false) {
-                            $work['Grade']['points'] = trim(explode('<', explode('Points = ', $row)[1])[0]);
+                    if (isset(explode('size="2">', $row)[2])) {
+                        if (explode('<', explode('size="2">', $row)[2])[0]) {
+                            $category = explode('<', explode('size="2">', $row)[2])[0];
+                        } else {
+                            $category = explode('<', explode('size="2">', $row)[1])[0];
                         }
                     } else {
+                        $category = explode('<', explode('size="2">', $row)[1])[0];
+                    }
+
+                    if ($row !== end($exploded)) {
                         $work[$category] = [];
                         $assignments = explode('<td align="left"><font size="1" face="Arial">', $exploded[$i + 1]);
                         array_shift($assignments);
@@ -149,10 +159,6 @@ class DashboardPresenter extends BasePresenter
                 }
                 $i++;
             }
-
-            echo '<pre>';
-            die(print_r($work));
-
 
             $gradebook = true;
             $this->template->classname = $classname;
