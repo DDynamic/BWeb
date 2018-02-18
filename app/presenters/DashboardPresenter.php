@@ -101,23 +101,18 @@ class DashboardPresenter extends BasePresenter
             '&TermID='.$term;
 
             $response = $client->get($report_url, ['cookies' => $user->getIdentity()->cookies])->getBody();
-
             $exploded = explode('<table', $response);
             array_shift($exploded);
 
-            $classname = explode('</b>', explode('<div style="border-bottom-style: solid; border-bottom-width: 1; padding-bottom: 1">
-            <font face="Arial"><b>', $exploded[0])[1])[0];
+            $classname = explode('<', explode('<font face="Arial"><b>', $exploded[0])[7])[0];
             array_shift($exploded);
 
             $work = [];
             $i = 0;
 
             $work['Grade'] = [
-                'percent' => trim(explode('<', explode('<tr><td><b><font size="2" face="Arial">Term Grade</font></b></td><td>
-          <b><font size="2" face="Arial" >', $response)[1])[0]),
-                'letter' => trim(explode('<', explode('</font></b></td><td>
-          <b>
-          <font size="2" face="Arial" >', $response)[1])[0])
+                'percent' => trim(explode('<', explode('<font size="2" face="Arial" >', $response)[1])[0]),
+                'letter' => trim(explode('<', explode('<font size="2" face="Arial" >', explode('<tr><td><b><font size="2" face="Arial">Term Grade</font></b></td><td>', $response)[1])[2])[0])
             ];
 
             if (strpos($response, 'Points = ') !== false) {
