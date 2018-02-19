@@ -8,7 +8,8 @@ use GuzzleHttp\Client;
 
 class RenwebContainer extends Container
 {
-    public function createServiceRenweb() {
+    public function createServiceRenweb()
+    {
         $base_uri = 'https://'.$this->parameters['district'].'.client.renweb.com';
         $client = new Client([
             'base_uri' => $base_uri,

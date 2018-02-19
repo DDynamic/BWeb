@@ -12,7 +12,7 @@ use App\Containers\RenwebContainer;
 
 class Authenticator implements IAuthenticator
 {
-    function authenticate(array $credentials)
+    public function authenticate(array $credentials)
     {
         list($username, $password, $account, $district) = $credentials;
 
