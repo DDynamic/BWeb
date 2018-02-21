@@ -37,15 +37,19 @@
                 {else}
                     <thead>
                         <tr class="table-info">
-                            <th colspan="2">{$classname}</th>
+                            <th>{$classname}</th>
+                            <th>{$period}</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <td>{$instructor}</td>
+                            <td>{$year} {$term}</td>
                         </tr>
                         <tr class="table-primary">
-                            <td>{$assignments['letter']}</td>
-                            <td>{$assignments['percent']}%</td>
+                            <td colspan="2">{$assignments['letter']} {$assignments['percent']}%</td>
                         </tr>
                         {if isset($assignments['points'])}
                             <tr>
-                                <td colspan="2">Points {$assignments['points']}</td>
+                                <td colspan="2">Points = {$assignments['points']}</td>
                             </tr>
                         {/if}
                     </thead>

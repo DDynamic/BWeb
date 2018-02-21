@@ -105,59 +105,72 @@ class DashboardPresenter extends BasePresenter
             array_shift($exploded);
 
             $classname = explode('<', explode('<font face="Arial"><b>', $exploded[0])[7])[0];
+            $instructor =  explode('<', explode('<font face="Arial"><b>', $exploded[0])[3])[0];
+            $term = explode('<', explode('<font face="Arial"><b>', $exploded[0])[5])[0];
+            $period = explode('<', explode('<font face="Arial"><b>', $exploded[0])[4])[0];
+            $year = explode('<', explode('<font face="Arial"><b>', $exploded[0])[2])[0];
             array_shift($exploded);
 
             $work = [];
             $i = 0;
 
-            $work['Grade'] = [
-                'percent' => trim(explode('<', explode('<font size="2" face="Arial" >', $response)[1])[0]),
-                'letter' => trim(explode('<', explode('<font size="2" face="Arial" >', explode('<tr><td><b><font size="2" face="Arial">Term Grade</font></b></td><td>', $response)[1])[2])[0])
-            ];
+            if (isset(explode('<font size="2" face="Arial" >', explode('<tr><td><b><font size="2" face="Arial">Term Grade</font></b></td><td>', $response)[1])[2])) {
+                $work['Grade'] = [
+                    'percent' => trim(explode('<', explode('<font size="2" face="Arial" >', $response)[1])[0]),
+                    'letter' => trim(explode('<', explode('<font size="2" face="Arial" >', explode('<tr><td><b><font size="2" face="Arial">Term Grade</font></b></td><td>', $response)[1])[2])[0])
+                ];
 
-            if (strpos($response, 'Points = ') !== false) {
-                $work['Grade']['points'] = trim(explode('<', explode('Points = ', $response)[1])[0]);
-            }
+                if (strpos($response, 'Points = ') !== false) {
+                    $work['Grade']['points'] = trim(explode('<', explode('Points = ', $response)[1])[0]);
+                }
 
-            foreach ($exploded as $row) {
-                if (isset(explode('size="2">', $row)[1])) {
-                    if (isset(explode('size="2">', $row)[2])) {
-                        if (explode('<', explode('size="2">', $row)[2])[0]) {
-                            $category = explode('<', explode('size="2">', $row)[2])[0];
+                foreach ($exploded as $row) {
+                    if (isset(explode('size="2">', $row)[1])) {
+                        if (isset(explode('size="2">', $row)[2])) {
+                            if (explode('<', explode('size="2">', $row)[2])[0]) {
+                                $category = explode('<', explode('size="2">', $row)[2])[0];
+                            } else {
+                                $category = explode('<', explode('size="2">', $row)[1])[0];
+                            }
                         } else {
                             $category = explode('<', explode('size="2">', $row)[1])[0];
                         }
-                    } else {
-                        $category = explode('<', explode('size="2">', $row)[1])[0];
-                    }
 
-                    if ($row !== end($exploded)) {
-                        $work[$category] = [];
-                        $assignments = explode('<td align="left"><font size="1" face="Arial">', $exploded[$i + 1]);
-                        array_shift($assignments);
+                        if ($row !== end($exploded)) {
+                            $work[$category] = [];
+                            $assignments = explode('<td align="left" ><font size="1" face="Arial">', $exploded[$i + 1]);
+                            array_shift($assignments);
 
-                        foreach ($assignments as $assignment) {
-                            $values = explode('<td ', $assignment);
+                            foreach ($assignments as $assignment) {
+                                $values = explode('<td ', $assignment);
 
-                            array_push($work[$category], [
-                                'name' => trim(explode('<', $values[0])[0]),
-                                'pts' => trim(explode("</", explode('k">', $values[1])[1])[0]),
-                                'max' => trim(explode('<', explode('color="Black">', $values[2])[1])[0]),
-                                'avg' => trim(explode('<', explode('color="Black">', $values[3])[1])[0]),
-                                'status' => trim(explode('<', explode('color="Black">', $values[4])[1])[0]),
-                                'due' => trim(explode('<', explode('color="Black">', $values[5])[1])[0]),
-                                'curve' => trim(explode('<', explode('color="Black">', $values[6])[1])[0]),
-                                'bonus' => trim(explode('<', explode('color="Black">', $values[7])[1])[0])
-                            ]);
+                                array_push($work[$category], [
+                                    'name' => trim(explode('<', $values[0])[0]),
+                                    'pts' => trim(explode("</", explode('k">', $values[1])[1])[0]),
+                                    'max' => trim(explode('<', explode('color="Black">', $values[2])[1])[0]),
+                                    'avg' => trim(explode('<', explode('color="Black">', $values[3])[1])[0]),
+                                    'status' => trim(explode('<', explode('color="Black">', $values[4])[1])[0]),
+                                    'due' => trim(explode('<', explode('color="Black">', $values[5])[1])[0]),
+                                    'curve' => trim(explode('<', explode('color="Black">', $values[6])[1])[0]),
+                                    'bonus' => trim(explode('<', explode('color="Black">', $values[7])[1])[0])
+                                ]);
+                            }
                         }
                     }
+                    $i++;
                 }
-                $i++;
-            }
 
-            $gradebook = true;
-            $this->template->classname = $classname;
-            $this->template->work = $work;
+                $gradebook = true;
+
+                $this->template->classname = $classname;
+                $this->template->instructor = $instructor;
+                $this->template->term = $term;
+                $this->template->period = $period;
+                $this->template->year = $year;
+                $this->template->work = $work;
+            } else {
+                $gradebook = false;
+            }
         } else {
             $gradebook = false;
         }
