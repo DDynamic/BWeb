@@ -139,11 +139,13 @@ class DashboardPresenter extends BasePresenter
                         if ($row !== end($exploded)) {
                             $work[$category] = [];
                             $assignments = explode('<td align="left" ><font size="1" face="Arial">', $exploded[$i + 1]);
+                            $average = trim(explode('<', explode('<font size="2" face="Arial">', explode('<p align="left"><b><font size="2" face="Arial">Category Average</font></b></td><td>', $exploded[$i + 1])[1])[1])[0]);
+
+                            array_push($work[$category], ['catavg' => $average]);
                             array_shift($assignments);
 
                             foreach ($assignments as $assignment) {
                                 $values = explode('<td ', $assignment);
-
                                 array_push($work[$category], [
                                     'name' => trim(explode('<', $values[0])[0]),
                                     'pts' => trim(explode("</", explode('k">', $values[1])[1])[0]),

@@ -5,7 +5,7 @@
 {block display}
     {if $gradebook}
         <div class="table-responsive">
-            <table class="table table-striped" n:foreach="$work as $category => $assignments">
+            <table class="table" n:foreach="$work as $category => $assignments">
                 {if $category != 'Grade'}
                     <thead>
                         <tr class="table-info">
@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr n:foreach="$assignments as $assignment">
+                        <tr n:foreach="$assignments as $assignment" n:if="!array_key_exists('catavg', $assignment)">
                             <td>{$assignment['name']}</td>
                             <td>{$assignment['pts']}</td>
                             <td>{$assignment['max']}</td>
@@ -32,6 +32,9 @@
                             <td>{$assignment['due']}</td>
                             <td>{$assignment['curve']}</td>
                             <td>{$assignment['bonus']}</td>
+                        </tr>
+                        <tr class="table-primary" n:foreach="$assignments as $assignment" n:if="array_key_exists('catavg', $assignment)">
+                            <td colspan="8"><b>Category Average {$assignment['catavg']}%</b></td>
                         </tr>
                     </tbody>
                 {else}
