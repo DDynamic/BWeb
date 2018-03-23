@@ -7,7 +7,7 @@ use Nette\Application\UI;
 
 use App\Containers\RenwebContainer;
 
-class DashboardPresenter extends BasePresenter
+class HomepagePresenter extends Nette\Application\UI\Presenter
 {
     private $client;
 
@@ -17,14 +17,14 @@ class DashboardPresenter extends BasePresenter
         $user = $this->getUser();
 
         if (!$user->isLoggedIn()) {
-            $this->redirect('Authentication:login');
+            $this->redirect('Auth:login');
         }
 
         $container = new RenwebContainer(['district' => $user->getIdentity()->district]);
         $this->client = $container->getService('renweb');
     }
 
-    public function renderHome()
+    public function renderDefault()
     {
         $user = $this->user;
         $client = $this->client;

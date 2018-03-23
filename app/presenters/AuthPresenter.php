@@ -6,7 +6,7 @@ use Nette;
 use Nette\Application\UI;
 use App\Models\Authenticator;
 
-class AuthenticationPresenter extends BasePresenter
+class AuthPresenter extends Nette\Application\UI\Presenter
 {
     protected function startup()
     {
@@ -17,7 +17,7 @@ class AuthenticationPresenter extends BasePresenter
     protected function renderLogin()
     {
         if ($user->isLoggedIn()) {
-            $this->redirect('Dashboard:home');
+            $this->redirect('Homepage:default');
         }
     }
 
@@ -40,7 +40,7 @@ class AuthenticationPresenter extends BasePresenter
 
         try {
             $user->login($values->username, $values->password, $values->account, $values->district);
-            $this->redirect('Dashboard:home');
+            $this->redirect('Homepage:default');
         } catch (Nette\Security\AuthenticationException $e) {
             $form->addError('Invalid credentials.');
         }
@@ -49,6 +49,6 @@ class AuthenticationPresenter extends BasePresenter
     public function actionLogout()
     {
         $this->getUser()->logout();
-        $this->redirect('Authentication:login');
+        $this->redirect('Auth:login');
     }
 }
