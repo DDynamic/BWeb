@@ -21,7 +21,7 @@ class User extends NetteUser
                 return false;
             }
 
-            if (strpos($response, 'Logout') !== false) {
+            if (strpos($response, 'Log Out') !== false) {
                 return true;
             } else {
                 return false;

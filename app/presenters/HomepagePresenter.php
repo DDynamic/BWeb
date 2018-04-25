@@ -74,8 +74,8 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 
         $response = $client->get('/pw/school/class.cfm?studentid='.$user->getIdentity()->student_id.'&classid='.$id, ['cookies' => $user->getIdentity()->cookies])->getBody();
 
-        if (isset(explode('<form action="', $response)[1])) {
-            $report = explode('<form action="', $response)[1];
+        if (isset(explode('<form action="', $response)[2])) {
+            $report = explode('<form action="', $response)[2];
 
             $term = explode('<select class="ftermid" name="termid" onchange="window.termID', $response)[1];
             $term = explode('selected="selected">', $term)[0];
@@ -91,7 +91,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
             $student_id = explode('" />', explode('name="StudentID" value="', $report)[1])[0];
             $class_id = explode('" />', explode('name="ClassID2" value="', $report)[1])[0];
 
-            $report_url = '/renweb/reports/parentsweb/parentsweb_reports.cfm?District='.$district.
+            $report_url = '/pw/NAScopy/parentsweb_reports.cfm?District='.$district.
             '&ReportType='.$report_type.
             '&sessionid='.$session_id.
             '&ReportHash='.$report_hash.
@@ -103,7 +103,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
             $response = $client->get($report_url, ['cookies' => $user->getIdentity()->cookies])->getBody();
             $exploded = explode('<table', $response);
             array_shift($exploded);
-
+        
             $classname = explode('<', explode('<font face="Arial"><b>', $exploded[0])[7])[0];
             $instructor =  explode('<', explode('<font face="Arial"><b>', $exploded[0])[3])[0];
             $term = explode('<', explode('<font face="Arial"><b>', $exploded[0])[5])[0];
@@ -138,12 +138,12 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 
                         if ($row !== end($exploded)) {
                             $work[$category] = [];
-                            $assignments = explode('<td align="left" ><font size="1" face="Arial">', $exploded[$i + 1]);
+                            $assignments = explode('<td align="left"><font size="1" face="Arial">', $exploded[$i + 1]);
                             $average = trim(explode('<', explode('<font size="2" face="Arial">', explode('<p align="left"><b><font size="2" face="Arial">Category Average</font></b></td><td>', $exploded[$i + 1])[1])[1])[0]);
 
                             array_push($work[$category], ['catavg' => $average]);
                             array_shift($assignments);
-
+                            
                             foreach ($assignments as $assignment) {
                                 $values = explode('<td ', $assignment);
                                 array_push($work[$category], [
